@@ -60,7 +60,7 @@ export const loginUser = AsyncHandler(async (req, res) => {
          }
 
       }, process.env.ACCESS_TOKEN, {
-         expiresIn: "15m",
+         expiresIn:"15m",
       })
       res.status(200).json({ accessToken, user });
    }

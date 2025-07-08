@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "../components/AllContact.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-// import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 function AllContact() {
   const [loginUser, setLoginUser] = useState("");
   const [contact, setContact] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  console.log(token);
 
   useEffect(() => {
     setLoginUser(localStorage.getItem("loginUser"));
@@ -75,21 +77,12 @@ function AllContact() {
   };
 
   const expireToken = () => {
-    const token = localStorage.getItem("token");
-    const decode = JSON.parse(atob(token.split(".")[1]));
-    const currentTime = Date.now() / 1000;
+    const decode = jwtDecode(token);
+    const now = Date.now()/1000;// current time in second;
+    if(decode.exp<now){
+      localStorage.removeItem(token);
+    }
     console.log(decode);
-    console.log(currentTime);
-
-    if (decode.exp < currentTime) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("loginUser");
-      navigate("/");
-    }
-    try {
-    } catch (error) {
-      console.log(error);
-    }
   };
   expireToken();
 

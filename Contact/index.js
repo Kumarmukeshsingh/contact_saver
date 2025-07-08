@@ -16,7 +16,7 @@ const Port = 5000;
 
 const corsOption = {
    origin: "http://localhost:5173",
-   methods: "POST ,GET,PUT,DELETE",
+   methods: "POST,GET,PUT,DELETE",
    credentials: true,
 }
 app.use(cors(corsOption));
