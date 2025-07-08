@@ -27,6 +27,9 @@ app.use(express.json());
 app.use(errorHandler);
 app.use("/api/contact", router);
 app.use("/api/user", router1)
+app.use("/", (req, res) => {
+   res.send("i am from the server");
+})
 
 app.listen(Port, () => {
    console.log(`server is running on port ${Port}`);
