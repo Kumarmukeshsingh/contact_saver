@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../components/AddNew.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AddNewContact() {
+ 
   const navigate = useNavigate();
   const [input, setInput] = useState({
     name: "",
@@ -16,7 +17,7 @@ function AddNewContact() {
     e.preventDefault();
     console.log(input);
     try {
-      const url = "http://localhost:5000/api/contact/create";
+      const url = "https://contact-saver-mu.vercel.app/api/contact/create";
       const token = localStorage.getItem("token");
       const res = await fetch(url, {
         method: "POST",
@@ -38,8 +39,6 @@ function AddNewContact() {
       console.log(error.message);
     }
   };
-
-
 
   return (
     <>

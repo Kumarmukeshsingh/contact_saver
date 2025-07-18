@@ -1,35 +1,44 @@
 import React, { useState } from "react";
 import "../components/AddNew.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function EditContact() {
+  const location = useLocation();
+  const contact = location.state;
+  const id = contact._id;
+
   const navigate = useNavigate();
+
   const [input, setInput] = useState({
     name: "",
     email: "",
     phone: "",
   });
+
   const handleInput = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
+    // const id = e.target.id;
+    const token = localStorage.getItem("token");
     e.preventDefault();
     console.log(input);
     try {
-      // const url = "http://localhost:5000/api/contact/create";
-      const url = "http://localhost:5000/api/contact/update/${id}";
-      const token = localStorage.getItem("token");
+      const url = `https://contact-saver-mu.vercel.app/api/contact/update/${id}`;
       const res = await fetch(url, {
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(input),
       });
+
       const result = await res.json();
       console.log(result);
+      
       setInput({ name: "", email: "", phone: "" });
+      
       if (result.message) {
         setTimeout(() => {
           navigate("/allcontact");
@@ -46,9 +55,11 @@ function EditContact() {
         <div className="">
           <h1>Edit Contact : </h1>
         </div>
-        <form className="form-container" onSubmit={handleSubmit}>
+        <form className="form-container " onSubmit={handleSubmit}>
           <div className="">
-            <label htmlFor="">name : </label>
+            <label htmlFor="name" className="">
+              name : {contact.name}
+            </label>
             <input
               type="text"
               onChange={handleInput}
@@ -57,7 +68,7 @@ function EditContact() {
             />
           </div>
           <div>
-            <label htmlFor="">email</label>
+            <label htmlFor="">email: {contact.email}</label>
             <input
               type="email"
               onChange={handleInput}
@@ -66,7 +77,7 @@ function EditContact() {
             />
           </div>
           <div>
-            <label htmlFor="">phone No : </label>
+            <label htmlFor="">phone No :{contact.phone} </label>
             <input
               type="number"
               name="phone"

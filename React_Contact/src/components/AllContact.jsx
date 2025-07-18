@@ -9,7 +9,8 @@ function AllContact() {
   const [contact, setContact] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
+ 
 
   useEffect(() => {
     setLoginUser(localStorage.getItem("loginUser"));
@@ -18,7 +19,7 @@ function AllContact() {
   const fetchcontact = async () => {
     // console.log(localStorage.getItem("token"));
     try {
-      const url = "http://localhost:5000/api/contact";
+      const url = "https://contact-saver-mu.vercel.app/api/contact";
       // const headers = {
       //   headers: {
       //     " Authorization": localStorage.getItem("token"),
@@ -38,7 +39,7 @@ function AllContact() {
       setContact(data);
     } catch (error) {
       console.log(error.message);
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -59,7 +60,7 @@ function AllContact() {
     const token = localStorage.getItem("token");
     try {
       const res = await fetch(
-        `http://localhost:5000/api/contact/delete/${id}`,
+        `https://contact-saver-mu.vercel.app/api/contact/delete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -78,12 +79,15 @@ function AllContact() {
 
   const expireToken = () => {
     const decode = jwtDecode(token);
-    const now = Date.now()/1000;// current time in second;
-    if(decode.exp<now){
+    const now = Date.now() / 1000; // current time in second;
+    if (decode.exp < now) {
       localStorage.removeItem(token);
     }
     console.log(decode);
   };
+  setTimeout(() => {
+    handleLogout();
+  }, 10 * 10000);
   expireToken();
 
   return (
@@ -107,7 +111,7 @@ function AllContact() {
         <div className="all-contact">
           {contact.map((i) => {
             return (
-              <div className="card">
+              <div className="card" key={i._id}>
                 <div className=" contact-item" key={i._id}>
                   <li className="">name : {i.name} </li>
                   <li className="">email : {i.email}</li>
@@ -115,7 +119,7 @@ function AllContact() {
                 </div>
                 <div className="btn">
                   <button>
-                    <Link to="/edit">
+                    <Link to="/edit" state={i}>
                       <p>EDIT</p>
                     </Link>
                   </button>

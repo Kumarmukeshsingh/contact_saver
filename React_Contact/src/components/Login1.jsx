@@ -16,7 +16,7 @@ function Login1() {
     e.preventDefault();
     console.log(input);
     try {
-      const res = await fetch("http://localhost:5000/api/user/login", {
+      const res = await fetch("https://contact-saver-mu.vercel.app/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
@@ -69,7 +69,7 @@ function Login1() {
               autoComplete="false"
             />
           </div>
-          <button type="submit">Sign Up</button>
+          <button type="submit">Login </button>
           <p>
             if you don't have accout
             <Link to="/signup">

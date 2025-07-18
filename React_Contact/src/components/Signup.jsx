@@ -21,13 +21,16 @@ function Signup() {
     e.preventDefault();
     console.log(input);
     try {
-      const res = await fetch("http://localhost:5000/api/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(input),
-      });
+      const res = await fetch(
+        "https://contact-saver-mu.vercel.app/api/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(input),
+        }
+      );
       console.log(res);
 
       // setInput({
