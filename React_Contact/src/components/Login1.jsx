@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./Signup.css";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 function Login1() {
+  const [error, setError] = useState(false);
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -11,18 +11,25 @@ function Login1() {
   const navigate = useNavigate();
   const handleInput = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
+    setError(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(input);
     try {
-      const res = await fetch("https://contact-saver-mu.vercel.app/api/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-      });
+      const res = await fetch(
+        "https://contact-saver-mu.vercel.app/api/user/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(input),
+        }
+      );
+      console.log(res);
+      if (!res.ok) {
+      }
+
       const result = await res.json();
-      console.log(result);
 
       localStorage.setItem("token", result.accessToken);
       localStorage.setItem("loginUser", result.user.username);
@@ -33,8 +40,8 @@ function Login1() {
       }
     } catch (error) {
       console.log(" invalid user ");
-
-      console.log(error);
+      setError(true);
+      console.log(error.message);
     }
 
     // setInput({
@@ -49,6 +56,7 @@ function Login1() {
         <div className="">
           <h1>Login User </h1>
         </div>
+
         <form className="form-container" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="">email</label>
@@ -69,6 +77,9 @@ function Login1() {
               autoComplete="false"
             />
           </div>
+          {error && (
+            <p className="Error"> Usename and paassword is Invalid ! </p>
+          )}
           <button type="submit">Login </button>
           <p>
             if you don't have accout

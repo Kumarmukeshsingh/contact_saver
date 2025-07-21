@@ -50,3 +50,7 @@ span {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   cursor: pointer;
 }
+
+.Error {
+  color: red;
+}

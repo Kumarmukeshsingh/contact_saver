@@ -51,6 +51,19 @@ export const loginUser = AsyncHandler(async (req, res) => {
    }
 
    const user = await User.findOne({ email });
+
+   if (!user) {
+      res.status(403);
+      throw new Error("user is not valid");
+
+   }
+   if (!await bcrypt.compare(password, user.password)) {
+      res.status(401);
+      throw new Error("password and email is not valid ")
+   }
+
+
+
    if (user && (await bcrypt.compare(password, user.password))) {
       const accessToken = await jwt.sign({
          user: {
@@ -60,14 +73,12 @@ export const loginUser = AsyncHandler(async (req, res) => {
          }
 
       }, process.env.ACCESS_TOKEN, {
-         expiresIn:"15m",
+         expiresIn: "15m",
       })
       res.status(200).json({ accessToken, user });
    }
-   if (!user && !(await bcrypt.compare(password, user.password))) {
-      res.status(400)
-      throw new Error("password and email is not valid ")
-   }
+
+
    // res.json({ message: "login the user" })
 })
 
