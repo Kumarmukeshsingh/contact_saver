@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "../components/Signup.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+
 function Signup() {
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [input, setInput] = useState({
     username: "",
     email: "",
     password: "",
   });
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     const copyInput = { ...input };
     copyInput[name] = value;
     setInput(copyInput);
-
     // setInput({ ...input, [e.target.name]: e.target.value });
+    setError(false);
+    setIsEmpty(false);
   };
 
   const handleSubmit = async (e) => {
@@ -31,7 +36,16 @@ function Signup() {
           body: JSON.stringify(input),
         }
       );
+      if (res.ok) {
+        navigate("/");
+      }
       console.log(res);
+      if (!res.ok) {
+        setError(true);
+      }
+      if (!input.email || !input.password || !input.username) {
+        setIsEmpty(true);
+      }
 
       // setInput({
       //   username: "",
@@ -78,6 +92,18 @@ function Signup() {
               autoComplete="false"
             />
           </div>
+          {isEmpty ? (
+            isEmpty ? (
+              <p className="Error"> all field are reqired.</p>
+            ) : (
+              ""
+            )
+          ) : error ? (
+            <p className="Error"> user alreday exist </p>
+          ) : (
+            ""
+          )}
+
           <button type="submit">Sign Up</button>
           <p>
             if you already register

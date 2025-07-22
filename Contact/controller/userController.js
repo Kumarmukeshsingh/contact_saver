@@ -28,7 +28,7 @@ export const registerUser = AsyncHandler(async (req, res) => {
       email,
       password: hashedpassword,
    });
-   console.log(" user is :", user);
+   // console.log(" user is :", user);
    if (user) {
       res.status(201).json({ _id: user.id, email: user.email, password: user.password })
 
@@ -37,7 +37,7 @@ export const registerUser = AsyncHandler(async (req, res) => {
       throw new Error("user data is not valid")
    }
 
-   res.json({ message: " user create successfylly  " })
+   res.status(200).json({ message: " user create successfylly  " });
 
 })
 

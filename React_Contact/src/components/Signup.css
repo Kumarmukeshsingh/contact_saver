@@ -54,3 +54,8 @@ span {
 .Error {
   color: red;
 }
+@media screen and (max-width: 580px) {
+  /* body {
+    background-color: lightgreen;
+  } */
+}
